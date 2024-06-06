@@ -19,22 +19,21 @@ const gameIcons = [
 function App() {
   const [pieces, setPieces] = useState([]);
 
-  console.log(gameIcons);
-
   const startGame = () => {
     const dublicatGameIcons = [...gameIcons, ...gameIcons];
-
     const newGameIcones = [];
 
-    while (newGameIcones.length < gameIcons.length) {
+    while (newGameIcones.length < gameIcons.length * 2) {
       const randomIndex = Math.floor(Math.random() * dublicatGameIcons.length);
 
       newGameIcones.push({
-        emoji:dublicatGameIcons[randomIndex],
-        flipped:false,
-        solved:false,
-        position:newGameIcones.length
+        emoji: dublicatGameIcons[randomIndex],
+        flipped: false,
+        solved: false,
+        position: newGameIcones.length,
       });
+
+      dublicatGameIcons.splice(randomIndex, 1);
     }
 
     setPieces(newGameIcones);
