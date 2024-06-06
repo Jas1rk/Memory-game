@@ -1,23 +1,12 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import "./App.css";
 import Confetti from "react-confetti";
 
-const gameIcons = [
-  "👌",
-  "🐟",
-  "😎",
-  "🎪",
-  "🙌",
-  "🦓",
-  "🏍️",
-  "👀",
-  "🐧",
-
-];
-
+const gameIcons = ["👌", "🐟", "😎", "🎪", "🙌", "🦓", "🏍️", "👀", "🐧"];
 
 function App() {
   const [pieces, setPieces] = useState([]);
+  let timeOut = useRef();
 
   const checkIsFinished = useMemo(() => {
     if (pieces.length && pieces.every((piece) => piece.solved)) {
@@ -64,39 +53,32 @@ function App() {
 
   const logicForFlipped = () => {
     const flippedData = pieces.filter((data) => data.flipped && !data.solved);
-    setTimeout(() => {
+    timeOut.current = setTimeout(() => {
       if (flippedData.length === 2) {
-        if (flippedData[0].emoji === flippedData[1].emoji) {
-          setPieces(
-            pieces.map((data) => {
-              if (
-                data.position === flippedData[0].position ||
-                data.position === flippedData[1].position
-              ) {
+        setPieces(
+          pieces.map((data) => {
+            if (
+              data.position === flippedData[0].position ||
+              data.position === flippedData[1].position
+            ) {
+              if (flippedData[0].emoji === flippedData[1].emoji) {
                 data.solved = true;
-              }
-              return data;
-            })
-          );
-        } else {
-          setPieces(
-            pieces.map((data) => {
-              if (
-                data.position === flippedData[0].position ||
-                data.position === flippedData[1].position
-              ) {
+              } else {
                 data.flipped = false;
               }
-              return data;
-            })
-          );
-        }
+            }
+            return data;
+          })
+        );
       }
     }, 800);
   };
 
   useEffect(() => {
     logicForFlipped();
+    return () => {
+      clearInterval(timeOut.current);
+    };
   }, [pieces]);
 
   console.log(pieces);
