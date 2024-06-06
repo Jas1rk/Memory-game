@@ -20,6 +20,18 @@ h1 {
   font-size: 33px;
 }
 
+.game-completed{
+  background-color: rgba(0, 0, 0, 0.616);
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+
+.game-completed h1 {
+  font-size: 50px;
+  color: aliceblue;
+}
 .flip-card {
   background-color: transparent;
   perspective: 1000px; 
@@ -36,7 +48,7 @@ h1 {
 }
 
 
-.flip-card:hover .flip-card-inner {
+.flip-card.active .flip-card-inner {
   transform: rotateY(180deg);
 }
 
